@@ -1,17 +1,29 @@
 # Magic Store Project
+Magic Store is a simple e-commerce management system built with PHP using the MVC architecture and MySQL as the database. The project supports customer management, order processing, and email logging.
 
-## Requirements
+## Technologies Used
 
+- PHP 7+
+- MySQL
 - Docker
-- Docker Compose
+- Composer
+- HTML, CSS, JavaScript and jQuery
 
 ---
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and update the environment variables.
-2. Run: `docker-compose up --build` and `composer require vlucas/phpdotenv`
-3. Import the database from `database/init.sql`.
+1. Run:
+    ```bash
+    git clone https://github.com/your-username/magic-store.git
+    cd magic-store
+2. Copy `.env.example` to `.env` and update the environment variables.
+3. Run: `composer install`.
+4. Set up the Database with the following command:
+    ```
+    docker exec -i <your-mysql-container-id> mysql -u root -p < database/schema.sql
+5. Run: `docker-compose up -d`.
+4. Import the database from `database/init.sql`.
 
 ---
 
