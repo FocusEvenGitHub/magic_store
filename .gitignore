@@ -1,0 +1,37 @@
+# Dependências do Composer
+/vendor/
+composer.lock
+
+# Arquivos de configuração sensíveis
+.env
+config/database.php
+
+# Diretórios temporários
+/tmp/
+logs/
+cache/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configurações do IDE/Editor
+.vscode/
+.idea/
+*.iml
+
+# Arquivos do Docker
+docker-compose.override.yml
+docker/data/
+docker/logs/
+
+# Logs e arquivos gerados
+*.log
+*.sql
+*.sqlite
+*.bak
+*.swp
+
+# Sessões e uploads temporários do PHP
+sessions/
+uploads/
