@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Client.php';
-
+require_once __DIR__ . '/../../' . 'utils/ImportExcel.php';
 class ClientController {
     private $clientModel;
 
@@ -19,9 +19,15 @@ class ClientController {
 
     public function store() {
         $data = [
-            'name' => $_POST['name'],
+            'documento' => $_POST['documento'],
+            'cep' => $_POST['cep'],
+            'endereco' => $_POST['endereco'],
+            'bairro' => $_POST['bairro'],
+            'cidade' => $_POST['cidade'],
+            'uf' => $_POST['uf'],
+            'telefone' => $_POST['telefone'],
             'email' => $_POST['email'],
-            'magical_id' => $_POST['magical_id']
+            'ativo' => isset($_POST['ativo']) ? $_POST['ativo'] : 0
         ];
 
         $this->clientModel->create($data);
@@ -30,22 +36,61 @@ class ClientController {
     }
 
     public function edit() {
+        if (!isset($_GET['id'])) {
+            header('Location: index.php?controller=client&action=index');
+            exit;
+        }
+    
         $id = $_GET['id'];
         $client = $this->clientModel->findById($id);
+    
+        if (!$client) {
+            die("Cliente não encontrado!");
+        }
+    
         include __DIR__ . '/../views/clients/edit.php';
     }
-
+    
     public function update() {
+        if (!isset($_POST['id'])) {
+            header('Location: index.php?controller=client&action=index');
+            exit;
+        }
+    
         $id = $_POST['id'];
         $data = [
-            'name' => $_POST['name'],
+            'documento' => $_POST['documento'],
+            'cep' => $_POST['cep'],
+            'endereco' => $_POST['endereco'],
+            'bairro' => $_POST['bairro'],
+            'cidade' => $_POST['cidade'],
+            'uf' => $_POST['uf'],
+            'telefone' => $_POST['telefone'],
             'email' => $_POST['email'],
-            'magical_id' => $_POST['magical_id']
+            'ativo' => isset($_POST['ativo']) ? 1 : 0 // Se não for enviado, assume como 0
         ];
-
-        $this->clientModel->update($id, $data);
-        header('Location: index.php?controller=client&action=index');
-        exit;
+    
+        if ($this->clientModel->update($id, $data)) {
+            header('Location: index.php?controller=client&action=index');
+            exit;
+        } else {
+            die("Erro ao atualizar o cliente.");
+        }
+    }
+    public function import() {
+        if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['file']['tmp_name'];
+            
+            $clientImporter = new ClientImporter();
+            
+            $result = $clientImporter->importFromFile($fileTmpPath);
+            
+            echo "<script>alert('". $result ."');</script>";
+            $this->index();
+            
+        } else {
+            echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+        }
     }
 
     public function delete() {
@@ -55,3 +100,4 @@ class ClientController {
         exit;
     }
 }
+?>

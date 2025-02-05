@@ -9,8 +9,7 @@ class Client {
     }
 
     public function getAll() {
-        $stmt = $this->db->prepare('SELECT * FROM clients');
-        $stmt->execute();
+        $stmt = $this->db->query('SELECT * FROM clients');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -21,29 +20,56 @@ class Client {
     }
 
     public function create(array $data) {
-        $stmt = $this->db->prepare('INSERT INTO clients (name, email, magical_id) VALUES (?, ?, ?)');
-        return $stmt->execute([$data['name'], $data['email'], $data['magical_id']]);
+        $stmt = $this->db->prepare('
+            INSERT INTO clients (documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ');
+
+        return $stmt->execute([
+            $data['documento'], 
+            $data['cep'], 
+            $data['endereco'], 
+            $data['bairro'], 
+            $data['cidade'], 
+            $data['uf'], 
+            $data['telefone'], 
+            $data['email'], 
+            $data['ativo']
+        ]);
     }
 
     public function update($id, array $data) {
-        $stmt = $this->db->prepare('UPDATE clients SET name = ?, email = ?, magical_id = ? WHERE id = ?');
-        return $stmt->execute([$data['name'], $data['email'], $data['magical_id'], $id]);
+        $stmt = $this->db->prepare('
+            UPDATE clients 
+            SET documento = ?,
+                cep = ?, 
+                endereco = ?, 
+                bairro = ?, 
+                cidade = ?, 
+                uf = ?, 
+                telefone = ?, 
+                email = ?, 
+                ativo = ?
+            WHERE id = ?
+        ');
+
+        return $stmt->execute([
+            $data['documento'], 
+            $data['cep'], 
+            $data['endereco'], 
+            $data['bairro'], 
+            $data['cidade'], 
+            $data['uf'], 
+            $data['telefone'], 
+            $data['email'], 
+            $data['ativo'], 
+            $id
+        ]);
     }
 
     public function delete($id) {
         $stmt = $this->db->prepare('DELETE FROM clients WHERE id = ?');
         return $stmt->execute([$id]);
     }
-
-    public function findByEmail($email) {
-        $stmt = $this->db->prepare('SELECT * FROM clients WHERE email = ?');
-        $stmt->execute([$email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function countAll() {
-        $stmt = $this->db->prepare('SELECT COUNT(*) as total FROM clients');
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-    }
 }
+?>
