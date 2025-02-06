@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
 
 class Client {
     private $db;
@@ -21,11 +20,12 @@ class Client {
 
     public function create(array $data) {
         $stmt = $this->db->prepare('
-            INSERT INTO clients (documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients (nome, documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
 
         return $stmt->execute([
+            $data['nome'],       
             $data['documento'], 
             $data['cep'], 
             $data['endereco'], 
@@ -41,7 +41,8 @@ class Client {
     public function update($id, array $data) {
         $stmt = $this->db->prepare('
             UPDATE clients 
-            SET documento = ?,
+            SET nome = ?,
+                documento = ?,
                 cep = ?, 
                 endereco = ?, 
                 bairro = ?, 
@@ -54,6 +55,7 @@ class Client {
         ');
 
         return $stmt->execute([
+            $data['nome'],       
             $data['documento'], 
             $data['cep'], 
             $data['endereco'], 
@@ -68,6 +70,9 @@ class Client {
     }
 
     public function delete($id) {
+        $stmt = $this->db->prepare('DELETE FROM email_logs WHERE client_id = ?');
+        $stmt->execute([$id]);
+    
         $stmt = $this->db->prepare('DELETE FROM clients WHERE id = ?');
         return $stmt->execute([$id]);
     }

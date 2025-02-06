@@ -16,10 +16,10 @@
     
     <label for="status">Status:</label>
     <select name="status">
-      <option value="pending">Pending</option>
-      <option value="processing">Processing</option>
-      <option value="shipped">Shipped</option>
-      <option value="delivered">Delivered</option>
+      <option value="pending">Pendente</option>
+      <option value="processing">Processando</option>
+      <option value="shipped">Enviado</option>
+      <option value="delivered">Entregue</option>
     </select><br>
 
     <button type="submit">Create Order</button>

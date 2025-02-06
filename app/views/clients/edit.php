@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Edit Client</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-</head>
 <body>
-    <h1>Edit Client</h1>
+    <h1>Editar Cliente</h1>
     <form action="index.php?controller=client&action=update" method="post">
         <input type="hidden" name="id" value="<?php echo $client['id']; ?>">
         
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" value="<?= htmlspecialchars($client['nome']); ?>" required><br>
+
         <label>Documento:</label>
         <input type="text" name="documento" value="<?php echo htmlspecialchars($client['documento']); ?>" required><br>
         

@@ -15,7 +15,6 @@ class OrderController {
     }
 
     public function create() {
-
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $client_id = $_POST['client_id'];
           $product_details = $_POST['product_details'];
@@ -23,17 +22,19 @@ class OrderController {
   
           $clientExists = $this->orderModel->checkClientExists($client_id);
           if (!$clientExists) {
-            echo "<script>alert('ID Cliente não encontrado!');</script>";
-            $this->index();
-            exit;
-        }
-        
+              echo "<script>alert('ID Cliente não encontrado!');</script>";
+              $this->index();
+              return; 
+          }
   
           $this->orderModel->createOrder($client_id, $product_details, $status);
           $this->index();
-        }
-          include __DIR__ . '/../views/orders/create.php';
-  }
+          return; 
+      }
+  
+      include __DIR__ . '/../views/orders/create.php';
+    }
+  
   
 
   public function edit($id) {

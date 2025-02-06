@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Add Client</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-</head>
 <body>
-    <h1>Add Client</h1>
+    <h1>Novo Client</h1>
     <form action="index.php?controller=client&action=store" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" required><br>
+
         <label>Documento:</label>
         <input type="text" name="documento" required>
 
@@ -38,8 +35,8 @@
             <option value="0">No</option>
         </select>
 
-        <button type="submit">Save</button>
-        <a href="index.php">Cancel</a>
+        <button type="submit">Salvar</button>
+        <a href="index.php">Cancelar</a>
     </form>
 </body>
 </html>

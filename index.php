@@ -1,12 +1,10 @@
 <?php
-// public/index.php
 
-session_start(); // Inicia a sessão, se ainda não estiver iniciada
+session_start(); 
 
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Obtém os parâmetros da URL, definindo valores padrão se não estiverem presentes
 $controller = $_GET['controller'] ?? 'client';
 $action     = $_GET['action'] ?? 'index';
 $id         = $_GET['id'] ?? null;
@@ -62,6 +60,17 @@ $id         = $_GET['id'] ?? null;
               $ctrl->{$action}();
           } else {
               die('Ação inválida para o controller order.');
+          }
+          break;
+        case 'email':
+          require_once __DIR__ . '/app/controllers/EmailController.php';
+          $ctrl = new EmailController();
+          if (($action === 'sendEmail') && $id !== null) {
+              $ctrl->{$action}($id);
+          } elseif (method_exists($ctrl, $action)) {
+              $ctrl->{$action}();
+          } else {
+              die('Ação inválida para o controller email.');
           }
           break;
 

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Client.php';
-require_once __DIR__ . '/../../' . 'utils/ImportExcel.php';
+require_once __DIR__ . '/../../utils/ImportExcel.php';
+
 class ClientController {
     private $clientModel;
 
@@ -19,15 +20,16 @@ class ClientController {
 
     public function store() {
         $data = [
+            'nome'      => $_POST['nome'],        
             'documento' => $_POST['documento'],
-            'cep' => $_POST['cep'],
-            'endereco' => $_POST['endereco'],
-            'bairro' => $_POST['bairro'],
-            'cidade' => $_POST['cidade'],
-            'uf' => $_POST['uf'],
-            'telefone' => $_POST['telefone'],
-            'email' => $_POST['email'],
-            'ativo' => isset($_POST['ativo']) ? $_POST['ativo'] : 0
+            'cep'       => $_POST['cep'],
+            'endereco'  => $_POST['endereco'],
+            'bairro'    => $_POST['bairro'],
+            'cidade'    => $_POST['cidade'],
+            'uf'        => $_POST['uf'],
+            'telefone'  => $_POST['telefone'],
+            'email'     => $_POST['email'],
+            'ativo'     => isset($_POST['ativo']) ? 1 : 0
         ];
 
         $this->clientModel->create($data);
@@ -59,15 +61,16 @@ class ClientController {
     
         $id = $_POST['id'];
         $data = [
+            'nome'      => $_POST['nome'],        
             'documento' => $_POST['documento'],
-            'cep' => $_POST['cep'],
-            'endereco' => $_POST['endereco'],
-            'bairro' => $_POST['bairro'],
-            'cidade' => $_POST['cidade'],
-            'uf' => $_POST['uf'],
-            'telefone' => $_POST['telefone'],
-            'email' => $_POST['email'],
-            'ativo' => isset($_POST['ativo']) ? 1 : 0 // Se não for enviado, assume como 0
+            'cep'       => $_POST['cep'],
+            'endereco'  => $_POST['endereco'],
+            'bairro'    => $_POST['bairro'],
+            'cidade'    => $_POST['cidade'],
+            'uf'        => $_POST['uf'],
+            'telefone'  => $_POST['telefone'],
+            'email'     => $_POST['email'],
+            'ativo'     => isset($_POST['ativo']) ? 1 : 0
         ];
     
         if ($this->clientModel->update($id, $data)) {
@@ -77,6 +80,7 @@ class ClientController {
             die("Erro ao atualizar o cliente.");
         }
     }
+
     public function import() {
         if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['file']['tmp_name'];
