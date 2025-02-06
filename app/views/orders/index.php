@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <title>Orders</title>
   <link rel="stylesheet" type="text/css" href="../css/style.css">
-  <script src="../js/script.js"></script>
 </head>
 <body>
   <h1>Orders</h1>

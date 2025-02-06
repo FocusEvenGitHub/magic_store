@@ -2,3 +2,26 @@ body { font-family: Arial, sans-serif; }
 table { border-collapse: collapse; width: 100%; }
 th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
 a { margin-right: 10px; }
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    background-color: #333;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 10px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+  }
+  
+  nav ul li a.active {
+    background-color: #f39c12;
+    border-radius: 5px;
+  }
+  

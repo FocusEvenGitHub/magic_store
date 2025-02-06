@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Clients</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <script src="../js/script.js"></script>
-</head>
 <body>
-    <h1>Clients</h1>
     
     <a href="index.php?controller=client&action=create">Add Client</a>
     <form action="index.php?controller=client&action=import" method="POST" enctype="multipart/form-data">

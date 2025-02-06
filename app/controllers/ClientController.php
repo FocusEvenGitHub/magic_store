@@ -31,13 +31,13 @@ class ClientController {
         ];
 
         $this->clientModel->create($data);
-        header('Location: index.php?controller=client&action=index');
+        $this->index();
         exit;
     }
 
     public function edit() {
         if (!isset($_GET['id'])) {
-            header('Location: index.php?controller=client&action=index');
+            $this->index();
             exit;
         }
     
@@ -53,7 +53,7 @@ class ClientController {
     
     public function update() {
         if (!isset($_POST['id'])) {
-            header('Location: index.php?controller=client&action=index');
+            $this->index();
             exit;
         }
     
@@ -71,7 +71,7 @@ class ClientController {
         ];
     
         if ($this->clientModel->update($id, $data)) {
-            header('Location: index.php?controller=client&action=index');
+            $this->index();
             exit;
         } else {
             die("Erro ao atualizar o cliente.");
@@ -96,7 +96,7 @@ class ClientController {
     public function delete() {
         $id = $_GET['id'];
         $this->clientModel->delete($id);
-        header('Location: index.php?controller=client&action=index');
+        $this->index();
         exit;
     }
 }
