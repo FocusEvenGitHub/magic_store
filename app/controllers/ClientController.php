@@ -9,6 +9,15 @@ class ClientController {
         $this->clientModel = new Client();
     }
 
+    private function setFlash($message, $type = 'success') {
+        $_SESSION['flash_message'] = ['message' => $message, 'type' => $type];
+    }
+
+    private function redirectToIndex() {
+        $this->index();
+        exit;
+    }
+
     public function index() {
         $clients = $this->clientModel->getAll();
         include __DIR__ . '/../views/clients/index.php';
@@ -19,89 +28,110 @@ class ClientController {
     }
 
     public function store() {
-        $data = [
-            'nome'      => $_POST['nome'],        
-            'documento' => $_POST['documento'],
-            'cep'       => $_POST['cep'],
-            'endereco'  => $_POST['endereco'],
-            'bairro'    => $_POST['bairro'],
-            'cidade'    => $_POST['cidade'],
-            'uf'        => $_POST['uf'],
-            'telefone'  => $_POST['telefone'],
-            'email'     => $_POST['email'],
-            'ativo'     => isset($_POST['ativo']) ? 1 : 0
-        ];
-
-        $this->clientModel->create($data);
-        $this->index();
-        exit;
+        $data = [];
+        $data['nome']      = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+        $data['documento'] = filter_input(INPUT_POST, 'documento', FILTER_SANITIZE_STRING);
+        $data['cep']       = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING);
+        $data['endereco']  = filter_input(INPUT_POST, 'endereco', FILTER_SANITIZE_STRING);
+        $data['bairro']    = filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING);
+        $data['cidade']    = filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING);
+        $data['uf']        = filter_input(INPUT_POST, 'uf', FILTER_SANITIZE_STRING);
+        $data['telefone']  = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_STRING);
+        $data['email']     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $data['ativo']     = isset($_POST['ativo']) ? 1 : 0;
+        
+        if (empty($data['nome']) || empty($data['documento']) || empty($data['email'])) {
+            $this->setFlash('Nome, Documento e E-mail são obrigatórios.', 'error');
+            $this->redirectToIndex();
+        }
+        
+        $result = $this->clientModel->create($data);
+        if ($result) {
+            $this->setFlash('Cliente criado com sucesso!');
+        } else {
+            $this->setFlash('Erro ao criar cliente.', 'error');
+        }
+        $this->redirectToIndex();
     }
 
     public function edit() {
         if (!isset($_GET['id'])) {
-            $this->index();
-            exit;
+            $this->redirectToIndex();
         }
-    
-        $id = $_GET['id'];
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) {
+            $this->setFlash('ID inválido.', 'error');
+            $this->redirectToIndex();
+        }
         $client = $this->clientModel->findById($id);
-    
         if (!$client) {
-            die("Cliente não encontrado!");
+            $this->setFlash('Cliente não encontrado.', 'error');
+            $this->redirectToIndex();
         }
-    
         include __DIR__ . '/../views/clients/edit.php';
     }
     
     public function update() {
         if (!isset($_POST['id'])) {
-            $this->index();
-            exit;
+            $this->redirectToIndex();
         }
-    
-        $id = $_POST['id'];
-        $data = [
-            'nome'      => $_POST['nome'],        
-            'documento' => $_POST['documento'],
-            'cep'       => $_POST['cep'],
-            'endereco'  => $_POST['endereco'],
-            'bairro'    => $_POST['bairro'],
-            'cidade'    => $_POST['cidade'],
-            'uf'        => $_POST['uf'],
-            'telefone'  => $_POST['telefone'],
-            'email'     => $_POST['email'],
-            'ativo'     => isset($_POST['ativo']) ? 1 : 0
-        ];
-    
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        if (!$id) {
+            $this->setFlash('ID inválido.', 'error');
+            $this->redirectToIndex();
+        }
+        $data = [];
+        $data['nome']      = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+        $data['documento'] = filter_input(INPUT_POST, 'documento', FILTER_SANITIZE_STRING);
+        $data['cep']       = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING);
+        $data['endereco']  = filter_input(INPUT_POST, 'endereco', FILTER_SANITIZE_STRING);
+        $data['bairro']    = filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING);
+        $data['cidade']    = filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING);
+        $data['uf']        = filter_input(INPUT_POST, 'uf', FILTER_SANITIZE_STRING);
+        $data['telefone']  = filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_STRING);
+        $data['email']     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $data['ativo']     = isset($_POST['ativo']) ? 1 : 0;
+        
+        if (empty($data['nome']) || empty($data['documento']) || empty($data['email'])) {
+            $this->setFlash('Nome, Documento e E-mail são obrigatórios.', 'error');
+            $this->redirectToIndex();
+        }
+        
         if ($this->clientModel->update($id, $data)) {
-            $this->index();
-            exit;
+            $this->setFlash('Cliente atualizado com sucesso!');
         } else {
-            die("Erro ao atualizar o cliente.");
+            $this->setFlash('Erro ao atualizar cliente.', 'error');
         }
+        $this->redirectToIndex();
     }
 
     public function import() {
         if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['file']['tmp_name'];
-            
             $clientImporter = new ClientImporter();
-            
             $result = $clientImporter->importFromFile($fileTmpPath);
-            
-            echo "<script>alert('". $result ."');</script>";
-            $this->index();
-            
+            $this->setFlash($result);
+            $this->redirectToIndex();
         } else {
             echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
         }
     }
 
     public function delete() {
-        $id = $_GET['id'];
-        $this->clientModel->delete($id);
-        $this->index();
-        exit;
+        if (!isset($_GET['id'])) {
+            $this->redirectToIndex();
+        }
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) {
+            $this->setFlash('ID inválido.', 'error');
+            $this->redirectToIndex();
+        }
+        if ($this->clientModel->delete($id)) {
+            $this->setFlash('Cliente excluído com sucesso!');
+        } else {
+            $this->setFlash('Erro ao excluir cliente.', 'error');
+        }
+        $this->redirectToIndex();
     }
 }
 ?>

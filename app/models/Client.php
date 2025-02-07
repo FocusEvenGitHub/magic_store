@@ -23,9 +23,8 @@ class Client {
             INSERT INTO clients (nome, documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
-
-        return $stmt->execute([
-            $data['nome'],       
+        if ($stmt->execute([
+            $data['nome'], 
             $data['documento'], 
             $data['cep'], 
             $data['endereco'], 
@@ -35,7 +34,12 @@ class Client {
             $data['telefone'], 
             $data['email'], 
             $data['ativo']
-        ]);
+        ])) {
+            return $this->db->lastInsertId();
+        } else {
+            error_log("Erro ao criar cliente: " . implode(" | ", $stmt->errorInfo()));
+            return false;
+        }
     }
 
     public function update($id, array $data) {
@@ -53,9 +57,8 @@ class Client {
                 ativo = ?
             WHERE id = ?
         ');
-
-        return $stmt->execute([
-            $data['nome'],       
+        if ($stmt->execute([
+            $data['nome'], 
             $data['documento'], 
             $data['cep'], 
             $data['endereco'], 
@@ -66,7 +69,12 @@ class Client {
             $data['email'], 
             $data['ativo'], 
             $id
-        ]);
+        ])) {
+            return true;
+        } else {
+            error_log("Erro ao atualizar cliente (ID: $id): " . implode(" | ", $stmt->errorInfo()));
+            return false;
+        }
     }
 
     public function delete($id) {
@@ -74,7 +82,12 @@ class Client {
         $stmt->execute([$id]);
     
         $stmt = $this->db->prepare('DELETE FROM clients WHERE id = ?');
-        return $stmt->execute([$id]);
+        if ($stmt->execute([$id])) {
+            return true;
+        } else {
+            error_log("Erro ao excluir cliente (ID: $id): " . implode(" | ", $stmt->errorInfo()));
+            return false;
+        }
     }
 }
 ?>

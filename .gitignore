@@ -27,6 +27,7 @@ docker/logs/
 
 # Logs e arquivos gerados
 *.log
+*.sql
 *.sqlite
 *.bak
 *.swp

@@ -30,7 +30,7 @@
         <input type="email" name="email" required>
 
         <label>Ativo:</label>
-        <select name="ativo">
+        <select style="width: auto;" name="ativo">
             <option value="1">Yes</option>
             <option value="0">No</option>
         </select>

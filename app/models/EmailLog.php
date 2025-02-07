@@ -1,5 +1,4 @@
 <?php
-
 class EmailLog {
     private $pdo;
 
@@ -7,17 +6,11 @@ class EmailLog {
         $this->pdo = Database::getConnection();
     }
 
-    /**
-     * Registra um log de envio de e-mail.
-     *
-     * @param int $client_id ID do cliente.
-     * @param string $subject Assunto do e-mail.
-     * @param string $message Mensagem enviada.
-     */
-    public function logEmail($client_id, $subject, $message) {
-        $stmt = $this->pdo->prepare("INSERT INTO email_logs (client_id, subject, message) VALUES (:client_id, :subject, :message)");
+    public function logEmail(int $clientId, string $subject, string $message): void {
+        $query = "INSERT INTO email_logs (client_id, subject, message) VALUES (:client_id, :subject, :message)";
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            ':client_id' => $client_id,
+            ':client_id' => $clientId,
             ':subject'   => $subject,
             ':message'   => $message
         ]);

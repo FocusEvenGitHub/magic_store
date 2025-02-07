@@ -1,54 +1,103 @@
-# Magic Store Project
-Magic Store is a simple e-commerce management system built with PHP using the MVC architecture and MySQL as the database. The project supports customer management, order processing, and email logging.
+# Magic Store
+Magic Store é um sistema simples de gerenciamento de e-commerce construído com PHP usando a arquitetura MVC e MySQL como banco de dados. O projeto suporta gerenciamento de clientes, processamento de pedidos e registro de e-mails.
 
-## Technologies Used
+## Tecnologias Utilizadas
 
-- PHP 7+
-- MySQL
-- Docker
-- Composer
-- HTML, CSS, JavaScript and jQuery
+- **PHP 7+**
+- **MySQL**
+- **Docker**
+- **HTML, CSS, JavaScript and jQuery**
+- **Composer** 
+- **PHPMailer** 
+- **PHPSpreadsheet** 
+- **PHP Dotenv** 
+- **Docker & Docker Compose** (para facilitar a configuração do ambiente)
+
+
+
+## 📦 Dependências
+
+As principais bibliotecas utilizadas são:
+
+| Pacote                         | Descrição |
+|--------------------------------|-----------|
+| `phpoffice/phpspreadsheet`     | Manipulação de planilhas Excel e CSV |
+| `phpmailer/phpmailer`          | Envio de e-mails via SMTP |
+| `vlucas/phpdotenv`             | Gerenciamento de variáveis de ambiente |
+
+Dependências adicionais instaladas automaticamente pelo Composer:
+- `ezyang/htmlpurifier` - Filtragem segura de HTML
+- `psr/http-message` - Padrão PSR para mensagens HTTP
+- `symfony/polyfill-*` - Backports de funcionalidades para versões mais antigas do PHP
+
+##  Como Rodar o Projeto
+
+### 1️⃣ Pré-requisitos
+
+
+- **Docker** e **Docker Compose** instalados.
+
+### 2️⃣ Instalação
+
+Clone o repositório e instale as dependências:
+
+```sh
+git clone https://github.com/seu-usuario/magic_store.git
+cd magic_store
+```
+### 3️⃣ Configuração do Ambiente
+Crie um arquivo `.env` na raiz do projeto e configure suas credenciais:
+```sh
+cp .env.example .env
+```
+Edite o arquivo .env e configure os valores necessários, como credenciais de e-mail e banco de dados.
+
+###  4️⃣ Rodando os containers
+Execute o comando abaixo para subir o ambiente:
+```sh
+docker-compose up -d
+```
+Isso irá rodar os contêineres com PHP, Apache e MySQL. O Composer será executado automaticamente dentro do contêiner para instalar as dependências.
+
+
+### 5️⃣ Acessando o projeto
+Agora, basta acessar no navegador:
+```
+http://localhost:8000
+```
 
 ---
+#### ➡️ Extras
 
-## Setup
+Caso precise entrar no container para executar comandos PHP:
+```sh
+docker exec -it magic_store_app bash
+```
+Dentro do container, você pode rodar comandos como:
+```sh
+composer install
+php -S localhost:8000 -t public
+```
 
-1. Run:
-    ```bash
-    git clone https://github.com/your-username/magic-store.git
-    cd magic-store
-2. Copy `.env.example` to `.env` and update the environment variables.
-3. Run: `composer install`.
-4. Set up the Database with the following command:
-    ```
-    docker exec -i <your-mysql-container-id> mysql -u root -p < database/schema.sql
-5. Run: `docker-compose up -d`.
-4. Import the database from `database/init.sql`.
+## Estrutura do projeto
 
----
-
-## Usage
-
-Open your browser and go to [http://localhost:8080](http://localhost:8080).
-
----
-
-## Libraries Used
-
-- **PHPMailer**
-- **PhpSpreadsheet**
-- **vlucas/phpdotenv**
-
----
-
-## Project Structure
-
-- **docker-compose.yml**: Docker Compose configuration for the web server and MySQL.
-- **Dockerfile**: Builds the PHP Apache container.
-- **public/**: Contains the entry point `index.php`, CSS, and JavaScript files.
-- **app/**: Holds controllers, models, and views (MVC structure).
-- **config/**: Database connection configuration.
-- **utils/**: Utility classes for email sending, Excel importing, and XML processing.
-- **database/**: SQL file (`init.sql`) to initialize the database.
-- **.env**: Environment configuration file.
-- **README.md**: This file.
+MAGIC_STORE/<br>
+│── app/<br>
+│   ├── controllers/            --- Controladores do sistema<br>
+│   ├── models/                 --- Modelos do sistema<br>
+│   ├── views/                  --- Arquivos de visualização (frontend)<br>
+├── config/                     --- Configuração do sistema<br>
+├── database/                   --- Arquivos relacionados ao banco de dados<br>
+├── public/                      --- Arquivos públicos acessíveis pela aplicação<br>
+│   ├── assets/                  --- Arquivos .css como tambem .js<br>
+├── utils/                       --- Utilitários da aplicação<br>
+├── vendor/                      --- Dependências gerenciadas pelo Composer<br>
+├── .env                         --- Arquivo de variáveis de ambiente<br>
+├── .env.example                 --- Exemplo de configuração do ambiente<br>
+├── .gitignore                    --- Arquivo de exclusões do Git<br>
+├── composer.json                 --- Dependências do Composer<br>
+├── composer.lock                 --- Arquivo de bloqueio do Composer<br>
+├── docker-compose.yml            --- Configuração do Docker Compose<br>
+├── Dockerfile                    --- Arquivo Docker<br>
+├── index.php                     --- Arquivo de entrada principal do sistema<br>
+├── readme.md                     --- Documentação do projeto<br>

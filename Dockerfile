@@ -8,6 +8,6 @@ COPY . /var/www/html/
 RUN a2enmod rewrite
 
 # OBS: Essa abordagem executa as migrations na construção da imagem.
-RUN php /var/www/html/database/magic_store.php
+RUN php /var/www/html/database/migration.php
 
 CMD ["apache2-foreground"]

@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../models/EmailLog.php';
 require_once __DIR__ . '/../models/Client.php';
 require_once __DIR__ . '/../../utils/EmailService.php';
-
 class EmailController {
     private $emailLog;
     private $emailService;
@@ -15,14 +14,11 @@ class EmailController {
         $this->clientModel = new Client();
     }
 
-    public function sendEmail($client_id) {
-        $client = $this->clientModel->findById($client_id);
+    public function sendEmail(int $clientId): void {
+        $client = $this->clientModel->findById($clientId);
 
         if (!$client) {
-            echo "<script>alert('Cliente não encontrado!');</script>";
-            require_once __DIR__ . '/ClientController.php';
-            $clientCtrl = new ClientController();
-            $clientCtrl->index();
+            $this->redirectToClientControllerWithMessage('Cliente não encontrado!');
             return;
         }
 
@@ -30,22 +26,31 @@ class EmailController {
             $subject = $_POST['subject'] ?? 'Sem Assunto';
             $message = $_POST['message'] ?? '';
 
-            $sent = $this->emailService->send($client['email'], $client['nome'], $subject, $message);
-
-            if ($sent) {
-                $this->emailLog->logEmail($client['id'], $subject, $message);
-                echo "<script>alert('E-mail enviado com sucesso!');</script>";
-            } else {
-                echo "<script>alert('Falha ao enviar e-mail!');</script>";
-            }
-
-            require_once __DIR__ . '/ClientController.php';
-            $clientCtrl = new ClientController();
-            $clientCtrl->index();
+            $this->processEmailSending($client, $subject, $message);
             return;
         }
 
         include __DIR__ . '/../views/email/sendEmail.php';
     }
+
+    private function processEmailSending(array $client, string $subject, string $message): void {
+        $sent = $this->emailService->send($client['email'], $client['nome'], $subject, $message);
+        $alertMessage = $sent ? 'E-mail enviado com sucesso!' : 'Falha ao enviar e-mail!';
+        $this->emailLog->logEmail($client['id'], $subject, $message);
+        echo "<script>alert('$alertMessage');</script>";
+        $this->redirectToClientController();
+    }
+
+    private function redirectToClientControllerWithMessage(string $message): void {
+        echo "<script>alert('$message');</script>";
+        $this->redirectToClientController();
+    }
+
+    private function redirectToClientController(): void {
+        require_once __DIR__ . '/ClientController.php';
+        $clientCtrl = new ClientController();
+        $clientCtrl->index();
+    }
 }
+
 ?>

@@ -1,27 +1,179 @@
-body { font-family: Arial, sans-serif; }
-table { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-a { margin-right: 10px; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+#loadingSpinner {
+  text-align: center;
+  margin: 20px;
+  font-size: 18px;
+  color: #0071e3;
+}
+
+#loadingSpinner i {
+  font-size: 24px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+  overflow: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  background: #0071e3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background: #005bb5;
+}
+
+button:active {
+  background: #003f88;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  transition: border-color 0.2s ease-in-out;
+}
+  
+
+input:focus, textarea:focus, select:focus {
+  border-color: #0071e3;
+  outline: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background: #0071e3;
+  color: white;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+}
+
+a {
+  color: #0071e3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+.action-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  text-decoration: none;
+  color: white;
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+.action-icons a i {
+  font-size: 18px;
+}
+
+.action-icons a:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform: translateZ(50%);
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.action-edit {     z-index: 0; background: #ffc107; }
+.action-edit:hover { z-index: 1; background: #e0a800; }
+
+.action-delete { z-index: 0; background: #dc3545; }
+.action-delete:hover { z-index: 1; background: #c82333; }
+
+.action-email { z-index: 0; background: #17a2b8; }
+.action-email:hover { z-index: 1; background: #138496; }
+
 
 nav ul {
-    list-style-type: none;
-    padding: 0;
-    background-color: #333;
+  list-style-type: none;
+  padding: 10px;
+  background-color: #333;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+nav ul li a.active {
+  background-color: #f39c12;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
   }
-  
-  nav ul li {
-    display: inline;
-    margin-right: 10px;
+  h1 {
+    font-size: 1.8rem;
   }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px;
+  h2 {
+    font-size: 1.3rem;
   }
-  
-  nav ul li a.active {
-    background-color: #f39c12;
-    border-radius: 5px;
+  button {
+    width: 100%;
   }
-  
+}

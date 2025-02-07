@@ -33,7 +33,7 @@
         <input type="email" name="email" value="<?php echo htmlspecialchars($client['email']); ?>" required><br>
         
         <label>Ativo:</label>
-        <input type="checkbox" name="ativo" value="1" <?php echo $client['ativo'] ? 'checked' : ''; ?>><br>
+        <input style="width: auto;" type="checkbox" name="ativo" value="1" <?php echo $client['ativo'] ? 'checked' : ''; ?>><br>
 
         <button type="submit">Salvar</button>
     </form>

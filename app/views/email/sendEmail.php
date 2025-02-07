@@ -6,8 +6,8 @@
     <link rel="stylesheet" type="text/css" href="/public/assets/css/style.css">
 </head>
 <body>
-    <h1>Enviar E-mail para <?= htmlspecialchars($client['nome']); ?></h1>
-    <h6>Enviar E-mail para <?= htmlspecialchars($client['email']); ?></h6>
+    <h2>Enviar E-mail para <?= htmlspecialchars($client['nome']); ?></h2>
+    <h6>E-mail: <?= htmlspecialchars($client['email']); ?></h6>
     <form action="index.php?controller=email&action=sendEmail&id=<?= $client['id']; ?>" method="POST">
         <label for="subject">Assunto:</label>
         <input type="text" name="subject" id="subject" required><br><br>
