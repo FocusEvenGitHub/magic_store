@@ -96,10 +96,12 @@ MAGIC_STORE/<br>
 │   ├── controllers/            --- Controladores do sistema<br>
 │   ├── models/                 --- Modelos do sistema<br>
 │   ├── views/                  --- Arquivos de visualização (frontend)<br>
+│   ├── services/               --- Arquivos da regra de negócios<br>
 ├── config/                     --- Configuração do sistema<br>
 ├── database/                   --- Arquivos relacionados ao banco de dados<br>
 ├── public/                      --- Arquivos públicos acessíveis pela aplicação<br>
 │   ├── assets/                  --- Arquivos .css como tambem .js<br>
+│   ├── index.php                     --- Arquivo de entrada principal do sistema<br>
 ├── utils/                       --- Utilitários da aplicação<br>
 ├── vendor/                      --- Dependências gerenciadas pelo Composer<br>
 ├── .env                         --- Arquivo de variáveis de ambiente<br>
@@ -109,5 +111,4 @@ MAGIC_STORE/<br>
 ├── composer.lock                 --- Arquivo de bloqueio do Composer<br>
 ├── docker-compose.yml            --- Configuração do Docker Compose<br>
 ├── Dockerfile                    --- Arquivo Docker<br>
-├── index.php                     --- Arquivo de entrada principal do sistema<br>
 ├── readme.md                     --- Documentação do projeto<br>
