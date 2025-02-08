@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pedidos>
+  <pedido>
+    <id_loja>001</id_loja>
+    <nome_loja>Torre de Cristal</nome_loja>
+    <localizacao>Planeta Zirak</localizacao>
+    <produto>Cristais Místicos</produto>
+    <quantidade>50</quantidade>
+  </pedido>
+  <pedido>
+    <id_loja>002</id_loja>
+    <nome_loja>Floresta Encantada</nome_loja>
+    <localizacao>Reino de Elyria</localizacao>
+    <produto>Poções de Juventude</produto>
+    <quantidade>30</quantidade>
+  </pedido>
+  <pedido>
+    <id_loja>003</id_loja>
+    <nome_loja>Deserto dos Ventos</nome_loja>
+    <localizacao>Planeta Kaitos</localizacao>
+    <produto>Areia Mágica</produto>
+    <quantidade>70</quantidade>
+  </pedido>
+  <pedido>
+    <id_loja>004</id_loja>
+    <nome_loja>Cavernas Submersas</nome_loja>
+    <localizacao>Mundo Aquático de Neptar</localizacao>
+    <produto>Pérolas de Energia</produto>
+    <quantidade>40</quantidade>
+  </pedido>
+  <pedido>
+    <id_loja>005</id_loja>
+    <nome_loja>Vulcões Adormecidos</nome_loja>
+    <localizacao>Ilhas de Fogo</localizacao>
+    <produto>Lava Encantada</produto>
+    <quantidade>20</quantidade>
+  </pedido>
+</pedidos>

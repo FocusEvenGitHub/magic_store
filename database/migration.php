@@ -1,14 +1,11 @@
 <?php
-// database/magic_store.php
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/database.php';
 
 $pdo = Database::getConnection();
 
-// Lista de migrations (SQL) a serem executadas
 $migrations = [
-    // Migration 1: Tabela de clientes
     "CREATE TABLE IF NOT EXISTS clients (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nome VARCHAR(255) NOT NULL,
@@ -23,7 +20,6 @@ $migrations = [
         ativo TINYINT(1) DEFAULT 1
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
-    // Migration 2: Tabela de pedidos
     "CREATE TABLE IF NOT EXISTS orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
         client_id INT NOT NULL,
@@ -33,7 +29,6 @@ $migrations = [
         FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
-    // Migration 3: Tabela de logs de e-mail
     "CREATE TABLE IF NOT EXISTS email_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
         client_id INT NOT NULL,

@@ -60,7 +60,17 @@ docker-compose up -d
 Isso irá rodar os contêineres com PHP, Apache e MySQL. O Composer será executado automaticamente dentro do contêiner para instalar as dependências.
 
 
-### 5️⃣ Acessando o projeto
+### 5️⃣ Rodar as Migrations
+Acesse o contêiner web
+```sh
+docker-compose exec web bash
+```
+Dentro do contênier, execute as migrations:
+```bash
+php /var/www/html/database/migration.php
+```
+
+## Acessando o projeto
 Agora, basta acessar no navegador:
 ```
 http://localhost:8000

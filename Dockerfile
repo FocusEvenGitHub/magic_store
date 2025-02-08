@@ -7,7 +7,7 @@ COPY . /var/www/html/
 
 RUN a2enmod rewrite
 
-# OBS: Essa abordagem executa as migrations na construção da imagem.
-RUN php /var/www/html/database/migration.php
+# Altera o DocumentRoot do Apache para /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
 CMD ["apache2-foreground"]

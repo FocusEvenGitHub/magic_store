@@ -1,19 +1,15 @@
 <?php
+require_once __DIR__ . '/BaseModel.php';
 
-class Client {
-    private $db;
+class Client extends BaseModel {
+    protected $table = 'clients';
 
-    public function __construct() {
-        $this->db = Database::getConnection();
-    }
-
-    public function getAll() {
-        $stmt = $this->db->query('SELECT * FROM clients');
+    public function getAll(): array {
+        $stmt = $this->db->query("SELECT * FROM {$this->table}");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function findById($id) {
-        $stmt = $this->db->prepare('SELECT * FROM clients WHERE id = ?');
+        $stmt = $this->db->prepare("SELECT * FROM clients WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -42,7 +38,7 @@ class Client {
         }
     }
 
-    public function update($id, array $data) {
+    public function update(int $id, array $data): bool {
         $stmt = $this->db->prepare('
             UPDATE clients 
             SET nome = ?,
@@ -77,11 +73,11 @@ class Client {
         }
     }
 
-    public function delete($id) {
-        $stmt = $this->db->prepare('DELETE FROM email_logs WHERE client_id = ?');
+    public function delete($id): bool {
+        $stmt = $this->db->prepare("DELETE FROM email_logs WHERE client_id = ?");
         $stmt->execute([$id]);
-    
-        $stmt = $this->db->prepare('DELETE FROM clients WHERE id = ?');
+
+        $stmt = $this->db->prepare("DELETE FROM clients WHERE id = ?");
         if ($stmt->execute([$id])) {
             return true;
         } else {

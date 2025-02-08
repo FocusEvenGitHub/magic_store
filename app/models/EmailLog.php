@@ -1,6 +1,6 @@
 <?php
 class EmailLog {
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct() {
         $this->pdo = Database::getConnection();

@@ -1,16 +1,15 @@
 <?php
-
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 class EmailService {
-    private $mailer;
+    private PHPMailer $mailer;
 
     public function __construct() {
         $this->mailer = new PHPMailer(true);
@@ -23,24 +22,20 @@ class EmailService {
             $this->mailer->Password   = $_ENV['SMTP_PASSWORD'];
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Port       = $_ENV['SMTP_PORT'];
-            $this->mailer->SMTPDebug = 0; // 0 = off, 1 = client message, 2 = detailed server messages
-
-
+            $this->mailer->SMTPDebug  = 0; // 0 = off, 1 = client message, 2 = detailed server messages
             $this->mailer->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['MAIL_FROM_NAME']);
         } catch (Exception $e) {
             echo "Erro ao configurar o serviço de e-mail: " . $this->mailer->ErrorInfo;
         }
     }
 
-    public function send($toEmail, $toName, $subject, $body) {
+    public function send(string $toEmail, string $toName, string $subject, string $body): bool {
         try {
             $this->mailer->clearAddresses();
             $this->mailer->addAddress($toEmail, $toName);
-
             $this->mailer->Subject = $subject;
             $this->mailer->Body    = $body;
             $this->mailer->isHTML(true);
-
             $this->mailer->send();
             return true;
         } catch (Exception $e) {
