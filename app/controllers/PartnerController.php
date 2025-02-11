@@ -17,7 +17,7 @@ class PartnerController extends BaseController {
         include __DIR__ . '/../views/partners/index.php';
     }
 
-    public function create(): void {
+    public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'nome_loja'   => filter_input(INPUT_POST, 'nome_loja', FILTER_SANITIZE_STRING),
