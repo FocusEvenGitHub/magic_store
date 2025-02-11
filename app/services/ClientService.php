@@ -9,7 +9,7 @@ class ClientService {
     }
 
     public function createClient(array $data): array {
-        if (empty($data['nome']) || empty($data['documento']) || empty($data['email'])) {
+        if (empty($data['nome']) || empty($data['email'])) {
             return ['success' => false, 'message' => 'Nome, Documento e E-mail são obrigatórios.'];
         }
         $result = $this->clientModel->create($data);
@@ -17,7 +17,7 @@ class ClientService {
     }
 
     public function updateClient(int $id, array $data): array {
-        if (empty($data['nome']) || empty($data['documento']) || empty($data['email'])) {
+        if (empty($data['nome']) || empty($data['email'])) {
             return ['success' => false, 'message' => 'Nome, Documento e E-mail são obrigatórios.'];
         }
         return $this->clientModel->update($id, $data) ? ['success' => true, 'message' => 'Cliente atualizado com sucesso!'] : ['success' => false, 'message' => 'Erro ao atualizar cliente.'];

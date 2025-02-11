@@ -26,64 +26,55 @@ class ClientController extends BaseController {
 
     public function store() {
         $data = [
-            'nome'      => filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING),
-            'documento' => filter_input(INPUT_POST, 'documento', FILTER_SANITIZE_STRING),
-            'cep'       => filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING),
-            'endereco'  => filter_input(INPUT_POST, 'endereco', FILTER_SANITIZE_STRING),
-            'bairro'    => filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING),
-            'cidade'    => filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING),
-            'uf'        => filter_input(INPUT_POST, 'uf', FILTER_SANITIZE_STRING),
-            'telefone'  => filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_STRING),
-            'email'     => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL),
-            'ativo'     => isset($_POST['ativo']) ? 1 : 0
+            'nome_cliente' => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
+            'email' => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)
         ];
+        
+        if (!$data['nome_cliente'] || !$data['email']) {
+            $this->setFlash('Nome e email são obrigatórios.', 'error');
+            $this->index();
+        }
 
-        $result = $this->clientService->createClient($data);
-        $this->setFlash($result['message'], $result['success'] ? 'success' : 'error');
+        $result = $this->clientModel->create($data);
+        $this->setFlash($result ? 'Cliente criado com sucesso!' : 'Erro ao criar cliente.', $result ? 'success' : 'error');
         $this->index();
     }
 
     public function edit() {
-        if (!isset($_GET['id'])) {
-            $this->index();
-        }
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
             $this->setFlash('ID inválido.', 'error');
             $this->index();
         }
+        
         $client = $this->clientModel->findById($id);
         if (!$client) {
             $this->setFlash('Cliente não encontrado.', 'error');
             $this->index();
         }
+        
         include __DIR__ . '/../views/clients/edit.php';
     }
 
     public function update() {
-        if (!isset($_POST['id'])) {
-            $this->index();
-        }
-        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_POST, 'id_cliente', FILTER_VALIDATE_INT);
         if (!$id) {
             $this->setFlash('ID inválido.', 'error');
             $this->index();
         }
-        $data = [
-            'nome'      => filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING),
-            'documento' => filter_input(INPUT_POST, 'documento', FILTER_SANITIZE_STRING),
-            'cep'       => filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING),
-            'endereco'  => filter_input(INPUT_POST, 'endereco', FILTER_SANITIZE_STRING),
-            'bairro'    => filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING),
-            'cidade'    => filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING),
-            'uf'        => filter_input(INPUT_POST, 'uf', FILTER_SANITIZE_STRING),
-            'telefone'  => filter_input(INPUT_POST, 'telefone', FILTER_SANITIZE_STRING),
-            'email'     => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL),
-            'ativo'     => isset($_POST['ativo']) ? 1 : 0
-        ];
 
-        $result = $this->clientService->updateClient($id, $data);
-        $this->setFlash($result['message'], $result['success'] ? 'success' : 'error');
+        $data = [
+            'nome_cliente' => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
+            'email' => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)
+        ];
+        
+        if (!$data['nome_cliente'] || !$data['email']) {
+            $this->setFlash('Nome e email são obrigatórios.', 'error');
+            $this->index();
+        }
+
+        $result = $this->clientModel->update($id, $data);
+        $this->setFlash($result ? 'Cliente atualizado com sucesso!' : 'Erro ao atualizar cliente.', $result ? 'success' : 'error');
         $this->index();
     }
 
@@ -95,25 +86,22 @@ class ClientController extends BaseController {
             $this->setFlash($result);
             $this->index();
         } else {
-            echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+            $this->setFlash('Nenhum arquivo foi enviado ou ocorreu um erro.',  'error');
+            $this->index();
         }
     }
 
     public function delete() {
-        if (!isset($_GET['id'])) {
-            $this->index();
-        }
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
             $this->setFlash('ID inválido.', 'error');
             $this->index();
         }
-        if ($this->clientModel->delete($id)) {
-            $this->setFlash('Cliente excluído com sucesso!');
-        } else {
-            $this->setFlash('Erro ao excluir cliente.', 'error');
-        }
+
+        $result = $this->clientModel->delete($id);
+        $this->setFlash($result ? 'Cliente excluído com sucesso!' : 'Erro ao excluir cliente.', $result ? 'success' : 'error');
         $this->index();
     }
 }
+
 ?>

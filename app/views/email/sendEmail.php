@@ -6,15 +6,15 @@
     <link rel="stylesheet" type="text/css" href="/public/assets/css/style.css">
 </head>
 <body>
-    <h2>Enviar E-mail para <?= htmlspecialchars($client['nome']); ?></h2>
+    <h2>Enviar E-mail para <?= htmlspecialchars($client['nome_cliente']); ?></h2>
     <h6>E-mail: <?= htmlspecialchars($client['email']); ?></h6>
-    <form action="index.php?controller=email&action=sendEmail&id=<?= $client['id']; ?>" method="POST">
+    <form action="index.php?controller=email&action=sendEmail&id=<?= $client['id_cliente']; ?>" method="POST">
         <label for="subject">Assunto:</label>
-        <input type="text" name="subject" id="subject" required><br><br>
-        
-        <label for="message">Mensagem:</label><br>
-        <textarea name="message" id="message" cols="50" rows="10" required></textarea><br><br>
-        
+        <input type="text" name="subject" id="subject" required><br>
+
+        <label for="message">Mensagem:</label>
+        <textarea name="message" id="message" required></textarea><br>
+
         <button type="submit">Enviar E-mail</button>
     </form>
 </body>

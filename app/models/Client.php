@@ -5,31 +5,24 @@ class Client extends BaseModel {
     protected $table = 'clients';
 
     public function getAll(): array {
-        $stmt = $this->db->query("SELECT * FROM {$this->table}");
+        $stmt = $this->db->query("SELECT id_cliente, nome_cliente, email FROM {$this->table}");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function findById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM clients WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT id_cliente, nome_cliente, email FROM clients WHERE id_cliente = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create(array $data) {
         $stmt = $this->db->prepare('
-            INSERT INTO clients (nome, documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients (nome_cliente, email) 
+            VALUES (?, ?)
         ');
         if ($stmt->execute([
-            $data['nome'], 
-            $data['documento'], 
-            $data['cep'], 
-            $data['endereco'], 
-            $data['bairro'], 
-            $data['cidade'], 
-            $data['uf'], 
-            $data['telefone'], 
-            $data['email'], 
-            $data['ativo']
+            $data['nome_cliente'], 
+            $data['email']
         ])) {
             return $this->db->lastInsertId();
         } else {
@@ -41,29 +34,12 @@ class Client extends BaseModel {
     public function update(int $id, array $data): bool {
         $stmt = $this->db->prepare('
             UPDATE clients 
-            SET nome = ?,
-                documento = ?,
-                cep = ?, 
-                endereco = ?, 
-                bairro = ?, 
-                cidade = ?, 
-                uf = ?, 
-                telefone = ?, 
-                email = ?, 
-                ativo = ?
-            WHERE id = ?
+            SET nome_cliente = ?, email = ?
+            WHERE id_cliente = ?
         ');
         if ($stmt->execute([
-            $data['nome'], 
-            $data['documento'], 
-            $data['cep'], 
-            $data['endereco'], 
-            $data['bairro'], 
-            $data['cidade'], 
-            $data['uf'], 
-            $data['telefone'], 
+            $data['nome_cliente'], 
             $data['email'], 
-            $data['ativo'], 
             $id
         ])) {
             return true;
@@ -74,10 +50,7 @@ class Client extends BaseModel {
     }
 
     public function delete($id): bool {
-        $stmt = $this->db->prepare("DELETE FROM email_logs WHERE client_id = ?");
-        $stmt->execute([$id]);
-
-        $stmt = $this->db->prepare("DELETE FROM clients WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM clients WHERE id_cliente = ?");
         if ($stmt->execute([$id])) {
             return true;
         } else {

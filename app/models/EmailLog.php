@@ -7,10 +7,10 @@ class EmailLog {
     }
 
     public function logEmail(int $clientId, string $subject, string $message): void {
-        $query = "INSERT INTO email_logs (client_id, subject, message) VALUES (:client_id, :subject, :message)";
+        $query = "INSERT INTO email_logs (id_cliente, subject, message) VALUES (:id_cliente, :subject, :message)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            ':client_id' => $clientId,
+            ':id_cliente' => $clientId,
             ':subject'   => $subject,
             ':message'   => $message
         ]);

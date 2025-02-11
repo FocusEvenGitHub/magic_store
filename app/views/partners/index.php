@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <body>
-    <div id="loadingSpinner">
-        <i class="fas fa-spinner fa-spin"></i> Carregando dados...
-    </div>
-
-    <a href="index.php?controller=order&action=create">
-      <i class="fas fa-plus-circle"></i> Novo Pedido
+    <a href="index.php?controller=partner&action=create">
+      <i class="fas fa-plus-circle"></i> Nova Loja
     </a>
-    <table id="ordersTable" class="display">
+
+    <form action="index.php?controller=partner&action=import" method="POST" enctype="multipart/form-data" style="margin-bottom: 20px;">
+        <input type="file" name="xml_file" accept=".xml" required>
+        <button type="submit" class="btn-import">
+            <i class="fas fa-file-import"></i> Importar Pedidos via XML
+        </button>
+    </form>
+    <table id="partnersTable" class="display">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Loja</th>
-                <th>Cliente</th>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Valor</th>
-                <th>Última Atualização</th>
+                <th>Nome</th>
+                <th>Localização</th>
                 <th>Ações</th>
             </tr>
         </thead>
-            <tbody>
-            <?php foreach($orders as $order): ?>
+        <tbody>
+            <?php foreach ($partners as $partner): ?>
             <tr>
-                <td><?php echo $order['id_order']; ?></td>
-                <td><?php echo htmlspecialchars($order['nome_loja'] ?? '- -'); ?></td>
-                <td><?php echo htmlspecialchars($order['nome_cliente'] ?? '- -'); ?></td>
-                <td><?php echo htmlspecialchars($order['produto']); ?></td>
-                <td><?php echo htmlspecialchars($order['quantidade']); ?></td>
-                <td><?php echo 'R$ ' . number_format($order['valor'], 2, ',', '.'); ?></td>
-                <td><?php echo date('d/m/Y H:i', strtotime($order['ultima_atualizacao'])); ?></td>
+                <td><?= $partner['id_loja'] ?></td>
+                <td><?= htmlspecialchars($partner['nome_loja']) ?></td>
+                <td><?= htmlspecialchars($partner['localizacao']) ?></td>
                 <td class="action-icons">
-                    <a href="index.php?controller=order&action=edit&id=<?php echo $order['id_order']; ?>" class="action-edit" data-tooltip="Editar">
+                    <a href="index.php?controller=partner&action=edit&id=<?= $partner['id_loja'] ?>" class="action-edit" data-tooltip="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="index.php?controller=order&action=delete&id=<?php echo $order['id_order']; ?>" class="action-delete" data-tooltip="Deletar" onclick="return confirm('Tem certeza?');">
+                    <a href="index.php?controller=partner&action=delete&id=<?= $partner['id_loja'] ?>" class="action-delete" data-tooltip="Deletar" onclick="return confirm('Tem certeza?');">
                         <i class="fas fa-trash"></i>
                     </a>
                 </td>
@@ -43,12 +38,11 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-
     <script>
         $(document).ready(function() {
             $('#loadingSpinner').show();
 
-            var table = $('#ordersTable').DataTable({
+            var table = $('#partnersTable').DataTable({
                 "paging": true,
                 "searching": true,
                 "ordering": true,

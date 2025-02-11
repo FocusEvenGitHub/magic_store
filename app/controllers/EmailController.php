@@ -16,7 +16,7 @@ class EmailController {
 
     public function sendEmail(int $clientId): void {
         $client = $this->clientModel->findById($clientId);
-
+        
         if (!$client) {
             $this->redirectToClientControllerWithMessage('Cliente não encontrado!');
             return;
@@ -33,9 +33,9 @@ class EmailController {
     }
 
     private function processEmailSending(array $client, string $subject, string $message): void {
-        $sent = $this->emailService->send($client['email'], $client['nome'], $subject, $message);
+        $sent = $this->emailService->send($client['email'], $client['nome_cliente'], $subject, $message);
         $alertMessage = $sent ? 'E-mail enviado com sucesso!' : 'Falha ao enviar e-mail!';
-        $this->emailLog->logEmail((int)$client['id'], $subject, $message);
+        $this->emailLog->logEmail((int)$client['id_cliente'], $subject, $message);
         echo "<script>alert('$alertMessage');</script>";
         $this->redirectToClientController();
     }
