@@ -4,7 +4,7 @@ class Partner extends BaseModel {
     protected $table = 'partners';
 
     public function createPartner(array $data) {
-        $required = ['id_loja', 'nome_loja', 'localizacao'];
+        $required = [ 'nome_loja', 'localizacao'];
         foreach ($required as $field) {
             if (empty($data[$field])) {
                 throw new Exception("Campo obrigatório faltando: $field");
@@ -12,13 +12,12 @@ class Partner extends BaseModel {
         }
     
         $stmt = $this->db->prepare("
-            INSERT INTO partners (id_loja, nome_loja, localizacao)
-            VALUES (:id_loja, :nome_loja, :localizacao)
+            INSERT INTO partners ( nome_loja, localizacao)
+            VALUES ( :nome_loja, :localizacao)
         ");
     
         try {
             $stmt->execute([
-                ':id_loja' => (int)$data['id_loja'],
                 ':nome_loja' => $data['nome_loja'],
                 ':localizacao' => $data['localizacao']
             ]);

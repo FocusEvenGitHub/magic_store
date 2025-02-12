@@ -17,7 +17,7 @@ class PartnerService {
     }
 
     public function createPartner(array $data): array {
-        if (empty($data['id_loja']) || empty($data['nome_loja']) || empty($data['localizacao'])) {
+        if (empty($data['nome_loja']) || empty($data['localizacao'])) {
             return ['success' => false, 'message' => 'Todos os campos são obrigatórios.'];
         }
 

@@ -28,3 +28,23 @@
   <a href="index.php?controller=order&action=index">Voltar para Pedidos</a>
 </body>
 </html>
+<script>
+$(document).ready(function() {
+    const $idLoja = $('input[name="id_loja"]');
+    const $idCliente = $('input[name="id_cliente"]');
+    
+    function updateInputStates() {
+        const lojaVal = $idLoja.val().trim();
+        const clienteVal = $idCliente.val().trim();
+        
+        $idCliente.prop('disabled', lojaVal !== '');
+        $idLoja.prop('disabled', clienteVal !== '');
+    }
+    
+    $('input[name="id_loja"], input[name="id_cliente"]').on('input', function() {
+        updateInputStates();
+    });
+    
+    updateInputStates();
+});
+</script>

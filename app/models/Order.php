@@ -16,9 +16,6 @@ class Order extends BaseModel {
     }
 
     public function createOrder(?int $id_loja, ?int $id_cliente, string $produto, int $quantidade, float $valor) {
-        if (empty($id_loja) || empty($id_cliente)) {
-            throw new InvalidOrderException("ID da loja ou cliente é obrigatório.");
-        }
 
         $stmt = $this->db->prepare("
             INSERT INTO orders (id_loja, id_cliente, produto, quantidade, valor)
@@ -63,10 +60,11 @@ class Order extends BaseModel {
 
     public function getOrderById(int $id_order) {
         $stmt = $this->db->prepare("
-            SELECT o.*, c.nome_cliente
-            FROM {$this->table} o
-            INNER JOIN clients c ON o.id_cliente = c.id_cliente
-            WHERE o.id_order = :id_order
+        SELECT o.*, p.nome_loja, c.nome_cliente
+        FROM {$this->table} o
+        LEFT JOIN clients c ON o.id_cliente = c.id_cliente
+        LEFT JOIN partners p ON o.id_loja = p.id_loja
+        WHERE o.id_order = :id_order
         ");
         $stmt->bindParam(':id_order', $id_order, PDO::PARAM_INT);
         $stmt->execute();
