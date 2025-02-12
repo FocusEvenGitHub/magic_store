@@ -35,7 +35,7 @@ Dependências adicionais instaladas automaticamente pelo Composer:
 ### 1️⃣ Pré-requisitos
 
 
-- **Docker** e **Docker Compose** instalados.
+- **Docker** e **Docker Compose** instalados e inicializado.
 
 ### 2️⃣ Instalação
 
@@ -81,20 +81,9 @@ Agora, basta acessar no navegador:
 http://localhost:8000
 ```
 
----
-#### ➡️ Extras
 
-Caso precise entrar no container para executar comandos PHP:
-```sh
-docker exec -it magic_store_app bash
-```
-Dentro do container, você pode rodar comandos como:
-```sh
-composer install
-php -S localhost:8000 -t public
-```
 
-## Estrutura do projeto
+## ➡️ Estrutura do projeto
 
 MAGIC_STORE/<br>
 │── app/<br>
