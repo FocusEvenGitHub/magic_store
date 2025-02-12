@@ -59,6 +59,11 @@ docker-compose up -d
 ```
 Isso irá rodar os contêineres com PHP, Apache e MySQL. O Composer será executado automaticamente dentro do contêiner para instalar as dependências.
 
+---
+Instale os componentes com Composer:
+```sh
+docker-compose exec web composer install
+```
 
 ### 5️⃣ Rodar as Migrations
 Acesse o contêiner web
