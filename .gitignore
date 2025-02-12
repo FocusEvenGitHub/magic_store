@@ -4,7 +4,6 @@ composer.lock
 
 # Arquivos de configuração sensíveis
 .env
-config/database.php
 
 # Diretórios temporários
 /tmp/
