@@ -9,10 +9,10 @@
   <h1>Criar Novo Pedido</h1>
   <form action="index.php?controller=order&action=create" method="POST">
     <label for="id_loja">ID da Loja:</label>
-    <input type="number" name="id_loja" ><br>
-    
+    <input type="number" name="id_loja">
+
     <label for="id_cliente">ID do Cliente:</label>
-    <input type="number" name="id_cliente" ><br>
+    <input type="number" name="id_cliente">
     
     <label for="produto">Produto:</label>
     <input type="text" name="produto" required><br>

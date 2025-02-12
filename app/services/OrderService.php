@@ -9,26 +9,24 @@ class OrderService {
     }
     
     public function createOrder(array $data): array {
-        if (empty($data['id_loja']) && empty($data['id_cliente'])) {
-            return ['success' => false, 'message' => 'Informe o ID da loja ou o ID do cliente.'];
-        }
-    
-        if (empty($data['produto']) || empty($data['quantidade']) || empty($data['valor'])) {
-            return ['success' => false, 'message' => 'Preencha os campos obrigatórios: produto, quantidade e valor.'];
-        }
-        $result = $this->orderModel->createOrder(
-            $data['id_loja'], 
-            $data['id_cliente'],
-            $data['produto'],
-            $data['quantidade'],
-            $data['valor']
-        );
-    
-        
-        if ($result) {
-            return ['success' => true, 'message' => 'Pedido criado com sucesso!', 'order_id' => $result];
-        } else {
-            return ['success' => false, 'message' => 'Erro ao criar pedido.'];
+        try {
+            if (empty($data['produto']) || empty($data['quantidade']) || empty($data['valor'])) {
+                throw new Exception("Preencha produto, quantidade e valor.");
+            }
+
+            $orderId = $this->orderModel->createOrder(
+                $data['id_loja'] ?? null, 
+                $data['id_cliente'] ?? null,
+                $data['produto'],
+                $data['quantidade'],
+                $data['valor']
+            );
+
+            return ['success' => true, 'message' => 'Pedido criado!', 'order_id' => $orderId];
+            
+        } catch (Exception $e) {
+            error_log("Erro OrderService: " . $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
         }
     }
     public function createOrderFromImport(array $data): array {

@@ -15,7 +15,11 @@ class Order extends BaseModel {
         return $stmt->fetchColumn() > 0;
     }
 
-    public function createOrder(int $id_loja, ?int $id_cliente, string $produto, int $quantidade, float $valor) {
+    public function createOrder(?int $id_loja, ?int $id_cliente, string $produto, int $quantidade, float $valor) {
+        if (empty($id_loja) || empty($id_cliente)) {
+            throw new InvalidOrderException("ID da loja ou cliente é obrigatório.");
+        }
+
         $stmt = $this->db->prepare("
             INSERT INTO orders (id_loja, id_cliente, produto, quantidade, valor)
             VALUES (:id_loja, :id_cliente, :produto, :quantidade, :valor)

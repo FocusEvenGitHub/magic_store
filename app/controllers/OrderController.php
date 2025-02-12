@@ -20,45 +20,27 @@ class OrderController extends BaseController {
         exit;
     }
 
-    public function create(): void {
+    public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                $data = [
+                    'id_loja'    => filter_input(INPUT_POST, 'id_loja', FILTER_VALIDATE_INT) ?: null,
+                    'id_cliente' => filter_input(INPUT_POST, 'id_cliente', FILTER_VALIDATE_INT) ?: null,
+                    'produto'    => filter_input(INPUT_POST, 'produto', FILTER_SANITIZE_STRING),
+                    'quantidade' => filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT),
+                    'valor'      => filter_input(INPUT_POST, 'valor', FILTER_VALIDATE_FLOAT)
+                ];
+
+                $result = $this->orderService->createOrder($data);
+                $this->setFlash($result['message'], $result['success'] ? 'success' : 'error');
+
+            } catch (Exception $e) {
+                $this->setFlash($e->getMessage(), 'error');
+            }
             
-            $data = [
-                'id_loja'    => filter_input(INPUT_POST, 'id_loja', FILTER_VALIDATE_INT),
-                'id_cliente' => filter_input(INPUT_POST, 'id_cliente', FILTER_VALIDATE_INT),
-                'produto'    => filter_input(INPUT_POST, 'produto', FILTER_SANITIZE_STRING),
-                'quantidade' => filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT),
-                'valor'      => filter_input(INPUT_POST, 'valor', FILTER_VALIDATE_FLOAT)
-            ];
-            if (empty($data['id_loja']) && empty($data['id_cliente'])) {
-                $this->setFlash('Informe o ID da loja ou o ID do cliente.', 'error');
-                $this->index();
-                return;
-            }
-    
-            if (!empty($data['id_cliente']) && !$this->orderModel->checkClientExists($data['id_cliente'])) {
-                $this->setFlash('ID do cliente não encontrado.', 'error');
-                $this->index();
-                return;
-            }
-    
-            if (!empty($data['id_loja']) && !$this->partnerModel->checkPartnerExists($data['id_loja'])) {
-                $this->setFlash('ID da loja não encontrado.', 'error');
-                $this->index();
-                return;
-            }
-    
-            if (empty($data['produto']) || empty($data['quantidade']) || empty($data['valor'])) {
-                $this->setFlash('Preencha os campos obrigatórios: produto, quantidade e valor.', 'error');
-                $this->index();
-                return;
-            }
-    
-            $result = $this->orderService->createOrder($data);
-            $this->setFlash($result['message'], $result['success'] ? 'success' : 'error');
             $this->index();
         }
-    
+        
         include __DIR__ . '/../views/orders/create.php';
     }
 
