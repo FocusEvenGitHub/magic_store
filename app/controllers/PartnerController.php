@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../services/PartnerImportService.php';
-require_once __DIR__ . '/../services/PartnerService.php';
-require_once __DIR__ . '/../services/OrderService.php';
+namespace App\Controllers;
+use App\Services\OrderService;
+use App\Services\PartnerImportService;
+use App\Services\PartnerService;
 
 class PartnerController extends BaseController {
     private $partnerService;

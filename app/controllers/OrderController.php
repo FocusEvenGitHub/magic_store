@@ -1,8 +1,11 @@
 <?php
-require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../services/OrderService.php';
-require_once __DIR__ . '/../models/Order.php';
-require_once __DIR__ . '/../models/Partner.php';
+
+namespace App\Controllers;
+
+use App\Services\OrderService;
+use App\Controllers\BaseController;
+use App\Models\Order;
+use App\Models\Partner;
 
 class OrderController extends BaseController {
     private $orderService;

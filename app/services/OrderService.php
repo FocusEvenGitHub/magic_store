@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../models/Order.php';
+namespace App\Services;
+
+use App\Models\Order;
 
 class OrderService {
     private $orderModel;

@@ -1,7 +1,9 @@
 <?php
-require_once __DIR__ . '/../models/EmailLog.php';
-require_once __DIR__ . '/../models/Client.php';
-require_once __DIR__ . '/../services/EmailService.php';
+namespace App\Controllers;
+
+use App\Models\EmailLog;
+use App\Models\Client;
+use App\Services\EmailService;
 
 class EmailController {
     private EmailLog $emailLog;
@@ -47,7 +49,6 @@ class EmailController {
 
     private function redirectToClientController(): void {
         require_once __DIR__ . '/ClientController.php';
-        $clientCtrl = new ClientController();
         $clientCtrl->index();
     }
 }

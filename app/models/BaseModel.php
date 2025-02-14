@@ -1,5 +1,8 @@
 <?php
-abstract class BaseModel {
+namespace App\Models;
+use Database;
+
+class BaseModel {
     protected $db;
 
     public function __construct() {

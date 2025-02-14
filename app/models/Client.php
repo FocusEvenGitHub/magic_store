@@ -1,7 +1,11 @@
 <?php
-require_once __DIR__ . '/BaseModel.php';
+namespace App\Models;
 
-class Client extends BaseModel {
+use App\Models\BaseModel;
+use PDO; 
+
+class Client extends BaseModel
+{
     protected $table = 'clients';
 
     public function getAll(): array {
@@ -59,4 +63,3 @@ class Client extends BaseModel {
         }
     }
 }
-?>

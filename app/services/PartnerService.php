@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../models/Partner.php';
+namespace App\Services;
+
+use App\Models\Partner;
 
 class PartnerService {
     private $partnerModel;

@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/BaseModel.php';
+namespace App\Models;
+use PDO; 
 
 class Order extends BaseModel {
     protected $table = 'orders';

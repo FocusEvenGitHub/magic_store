@@ -1,107 +1,78 @@
 <?php
-require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../models/Client.php';
-require_once __DIR__ . '/../services/ClientService.php';
-require_once __DIR__ . '/../../utils/ImportExcel.php';
 
-class ClientController extends BaseController {
-    private $clientService;
-    private $clientModel;
+namespace App\Controllers;
 
-    public function __construct() {
-        $this->clientService = new ClientService();
-        $this->clientModel = new Client();
+use App\Services\ClientService;
+use App\Controllers\BaseController;
+
+class ClientController extends BaseController
+{
+    private ClientService $clientService;
+
+    public function __construct(ClientService $clientService)
+    {
+        $this->clientService = $clientService;
     }
 
-    public function index() {
-        $clients = $this->clientModel->getAll();
-        include __DIR__ . '/../views/clients/index.php';
-        exit;
+    public function index()
+    {
+        $clients = $this->clientService->getAllClients();
+        $this->render('clients/index', ['clients' => $clients]);
     }
 
-    public function create() {
-        include __DIR__ . '/../views/clients/create.php';
-        exit;
+    public function create()
+    {
+        $this->render('clients/create');
     }
 
-    public function store() {
+    public function store()
+    {
         $data = [
-            'nome_cliente' => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
+            'nome'  => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
             'email' => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)
         ];
-        
-        if (!$data['nome_cliente'] || !$data['email']) {
-            $this->setFlash('Nome e email são obrigatórios.', 'error');
-            $this->index();
-        }
 
-        $result = $this->clientModel->create($data);
-        $this->setFlash($result ? 'Cliente criado com sucesso!' : 'Erro ao criar cliente.', $result ? 'success' : 'error');
-        $this->index();
+        $result = $this->clientService->createClient($data);
+        $this->redirectWithMessage('clients', $result['message'], $result['success']);
     }
 
-    public function edit() {
+    public function edit()
+    {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
-            $this->setFlash('ID inválido.', 'error');
-            $this->index();
+            $this->redirectWithMessage('clients', 'ID inválido.', false);
         }
-        
-        $client = $this->clientModel->findById($id);
+
+        $client = $this->clientService->getClientById($id);
         if (!$client) {
-            $this->setFlash('Cliente não encontrado.', 'error');
-            $this->index();
+            $this->redirectWithMessage('clients', 'Cliente não encontrado.', false);
         }
-        
-        include __DIR__ . '/../views/clients/edit.php';
+
+        $this->render('clients/edit', ['client' => $client]);
     }
 
-    public function update() {
+    public function update()
+    {
         $id = filter_input(INPUT_POST, 'id_cliente', FILTER_VALIDATE_INT);
-        if (!$id) {
-            $this->setFlash('ID inválido.', 'error');
-            $this->index();
-        }
-
         $data = [
-            'nome_cliente' => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
+            'nome'  => filter_input(INPUT_POST, 'nome_cliente', FILTER_SANITIZE_STRING),
             'email' => filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)
         ];
-        
-        if (!$data['nome_cliente'] || !$data['email']) {
-            $this->setFlash('Nome e email são obrigatórios.', 'error');
-            $this->index();
-        }
 
-        $result = $this->clientModel->update($id, $data);
-        $this->setFlash($result ? 'Cliente atualizado com sucesso!' : 'Erro ao atualizar cliente.', $result ? 'success' : 'error');
-        $this->index();
+        $result = $this->clientService->updateClient($id, $data);
+        $this->redirectWithMessage('clients', $result['message'], $result['success']);
     }
 
-    public function import() {
-        if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['file']['tmp_name'];
-            $clientImporter = new ClientImporter();
-            $result = $clientImporter->importFromFile($fileTmpPath);
-            $this->setFlash($result);
-            $this->index();
-        } else {
-            $this->setFlash('Nenhum arquivo foi enviado ou ocorreu um erro.',  'error');
-            $this->index();
-        }
-    }
-
-    public function delete() {
+    public function delete()
+    {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if (!$id) {
-            $this->setFlash('ID inválido.', 'error');
-            $this->index();
-        }
+        $result = $this->clientService->deleteClient($id);
+        $this->redirectWithMessage('clients', $result['message'], $result['success']);
+    }
 
-        $result = $this->clientModel->delete($id);
-        $this->setFlash($result ? 'Cliente excluído com sucesso!' : 'Erro ao excluir cliente.', $result ? 'success' : 'error');
-        $this->index();
+    private function redirectWithMessage(string $route, string $message, bool $success)
+    {
+        $this->setFlash($message, $success ? 'success' : 'error');
+        $this->redirect($route);
     }
 }
-
-?>

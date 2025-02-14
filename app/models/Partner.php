@@ -1,4 +1,6 @@
 <?php
+namespace App\Models;
+use PDO; 
 
 class Partner extends BaseModel {
     protected $table = 'partners';

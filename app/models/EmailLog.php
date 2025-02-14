@@ -1,10 +1,7 @@
 <?php
-class EmailLog {
-    private PDO $pdo;
+namespace App\Models;
 
-    public function __construct() {
-        $this->pdo = Database::getConnection();
-    }
+class EmailLog {
 
     public function logEmail(int $clientId, string $subject, string $message): void {
         $query = "INSERT INTO email_logs (id_cliente, subject, message) VALUES (:id_cliente, :subject, :message)";
